@@ -6,6 +6,7 @@ interface IOrderProps {
 
 const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
   const [items, setItems] = useState<{ name: string; imagePath: string }[]>([]);
+  const [error, setError] = useState(false);
   useEffect(() => {
     (async function fetchItems() {
       try {
@@ -13,11 +14,14 @@ const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
         res = await res.json();
         setItems(res);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     })();
   }, [type]);
 
+  if (error) {
+    return <div role='alert'>Wystąpił błąd podczas pobierania danych</div>;
+  }
   return (
     <div>
       {items.map((item) => {
