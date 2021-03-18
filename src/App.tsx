@@ -1,11 +1,12 @@
 import Orders from './pages/orders/Orders';
+import { OrderProvider } from './context/Order.Context';
 
-interface IAppProps {}
-
-const App: React.FunctionComponent<IAppProps> = (props) => {
+const App: React.FunctionComponent = () => {
   return (
     <div className='App'>
-      <Orders />
+      <OrderProvider>
+        <Orders />
+      </OrderProvider>
     </div>
   );
 };
