@@ -1,7 +1,45 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import Orders from '../Orders';
 import Order from '../Order';
 import { OrderProvider } from '../../../context/Order.Context';
+
+test('grand total', async () => {
+  render(<Orders />, { wrapper: OrderProvider });
+  const chocolateInput = await screen.findByRole('spinbutton', {
+    name: /Smak czekoladowy/i,
+  });
+  const vanillaInput = await screen.findByRole('spinbutton', {
+    name: /Smak waniliowy/i,
+  });
+  const cherryCheckbox = await screen.findByRole('checkbox', {
+    name: /Dodatek wiśniowy/i,
+  });
+  const mMsCheckbox = await screen.findByRole('checkbox', {
+    name: /Dodatek m&ms/i,
+  });
+  //scoobs 3 x 2 zł + toppings 2 x 1 zł = 8 zł
+  userEvent.clear(chocolateInput);
+  userEvent.type(chocolateInput, '1');
+  userEvent.clear(vanillaInput);
+  userEvent.type(vanillaInput, '2');
+  userEvent.click(cherryCheckbox);
+  userEvent.click(mMsCheckbox);
+
+  await waitFor(() => {
+    const totalPriceDisplay = screen.getByText('Suma: 8,00 zł');
+    expect(totalPriceDisplay).toBeInTheDocument();
+  });
+  userEvent.clear(chocolateInput);
+  userEvent.clear(vanillaInput);
+  userEvent.click(cherryCheckbox);
+  userEvent.click(mMsCheckbox);
+
+  await waitFor(() => {
+    const totalPriceDisplay = screen.getByText('Suma: 0,00 zł');
+    expect(totalPriceDisplay).toBeInTheDocument();
+  });
+});
 
 test('scoops subtotals', async () => {
   render(<Order type='scoops' />, { wrapper: OrderProvider });
