@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { IItem } from '../../models/IItem.model';
 import { useOrderContext } from '../../context/Order.Context';
 import OrderInput from './OrderInput';
+import { Offer } from '../../models/Offer.model';
 
 interface IOrderProps {
-  type: string;
+  type: Offer;
 }
 
 const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
@@ -14,9 +15,9 @@ const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
   useEffect(() => {
     (async function fetchItems() {
       try {
-        let res = await fetch(`http://localhost:3030/${type}`);
-        res = await res.json();
-        setItems(res);
+        const res = await fetch(`http://localhost:3030/${type}`);
+        const parseRes: IItem[] = await res.json();
+        setItems(parseRes);
       } catch (error) {
         setError(true);
       }

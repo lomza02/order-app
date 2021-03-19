@@ -1,7 +1,34 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ICountItem } from '../models/ICountItem.model';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { Offer } from '../models/Offer.model';
 
-const OrderContext = React.createContext({});
+type updateItems = (
+  name: string,
+  price: number,
+  amount: number,
+  type: Offer
+) => void;
+
+interface IContextProps {
+  scoopsTotalPrice: string;
+  toppingsTotalPrice: string;
+  grandTotalPrice: string;
+  scoops: Map<string, ICountItem>;
+  toppings: Map<string, ICountItem>;
+  updateItems: updateItems;
+}
+
+interface ICountItem {
+  amount: number;
+  price: number;
+}
+
+interface ITotals {
+  scoopsTotalPrice: string;
+  toppingsTotalPrice: string;
+  grandTotalPrice: string;
+}
+
+const OrderContext = React.createContext<Partial<IContextProps>>({});
 
 const countTotal = (mapObj: Map<string, ICountItem>) => {
   let total = 0;
@@ -32,8 +59,8 @@ export const OrderProvider: React.FunctionComponent = (props) => {
     scoops: new Map<string, ICountItem>(),
     toppings: new Map<string, ICountItem>(),
   });
-  const zeroPrice = formatPrice(0);
-  const [totals, setTotals] = useState({
+  const zeroPrice: string = formatPrice(0);
+  const [totals, setTotals] = useState<ITotals>({
     scoopsTotalPrice: zeroPrice,
     toppingsTotalPrice: zeroPrice,
     grandTotalPrice: zeroPrice,
@@ -49,20 +76,14 @@ export const OrderProvider: React.FunctionComponent = (props) => {
     });
   }, [items]);
 
-  const updateItems = (
-    name: string,
-    price: number,
-    amount: number,
-    type: string
-  ) => {
+  const updateItems: updateItems = (name, price, amount, type) => {
     const newItems = { ...items };
     newItems[type].set(name, { amount: amount, price: price });
     setItems(newItems);
   };
-  return (
-    <OrderContext.Provider
-      value={{ ...totals, ...items, updateItems }}
-      {...props}
-    />
-  );
+
+  const value = useMemo(() => {
+    return { ...totals, ...items, updateItems };
+  }, [totals, items, updateItems]);
+  return <OrderContext.Provider value={value} {...props} />;
 };
