@@ -27,7 +27,8 @@ const OrderInput: React.FunctionComponent<IOrderInputProps> = ({
           : Number(e.currentTarget.checked);
       if (amount < 0) {
         return setErrorText('Ilość musi być większa niż zero');
-      } else if (amount % 1 !== 0) {
+      }
+      if (amount % 1 !== 0) {
         return setErrorText('Ilość musi być liczbą całkowitą');
       }
       if (updateItems) {
@@ -46,7 +47,7 @@ const OrderInput: React.FunctionComponent<IOrderInputProps> = ({
         onChange={handleInput}
         id={name}
       />
-      if(errorText) {<p role='alert'>{errorText}</p>}
+      {errorText !== '' ? <p role='alert'>{errorText}</p> : null}
     </>
   );
 };
