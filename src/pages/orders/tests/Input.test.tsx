@@ -12,7 +12,7 @@ test('scoops input validation', async () => {
   userEvent.clear(scoopChocolateInput);
   userEvent.type(scoopChocolateInput, '-1');
   expect(
-    screen.getByText('Ilość musi być większa niż zero')
+    screen.getByText('Ilość nie może być liczbą ujemną')
   ).toBeInTheDocument();
   expect(
     screen.queryByText('Ilość musi być liczbą całkowitą')
@@ -25,14 +25,14 @@ test('scoops input validation', async () => {
     screen.getByText('Ilość musi być liczbą całkowitą')
   ).toBeInTheDocument();
   expect(
-    screen.queryByText('Ilość musi być większa niż zero')
+    screen.queryByText('Ilość nie może być liczbą ujemną')
   ).not.toBeInTheDocument();
 
   //if value is valid errors are hidden
   userEvent.clear(scoopChocolateInput);
   userEvent.type(scoopChocolateInput, '1');
   expect(
-    screen.queryByText('Ilość musi być większa niż zero')
+    screen.queryByText('Ilość nie może być liczbą ujemną')
   ).not.toBeInTheDocument();
   expect(
     screen.queryByText('Ilość musi być liczbą całkowitą')
