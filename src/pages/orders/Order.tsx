@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
+import { IItem } from '../../models/IItem.model';
+import { useOrderContext } from '../../context/Order.Context';
+import OrderInput from './OrderInput';
 
 interface IOrderProps {
   type: string;
 }
 
 const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
-  const [items, setItems] = useState<{ name: string; imagePath: string }[]>([]);
-  const [error, setError] = useState(false);
+  const [items, setItems] = useState<IItem[]>([]);
+  const [error, setError] = useState<boolean>(false);
+  const { scoopsTotalPrice, toppingsTotalPrice } = useOrderContext();
   useEffect(() => {
     (async function fetchItems() {
       try {
@@ -24,19 +28,28 @@ const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
   }
   return (
     <div>
-      {items.map((item) => {
+      {items.map((item: IItem) => {
         return (
           <div key={item.name}>
-            <img
-              src={item.imagePath}
-              alt={`${item.name.toLowerCase()} ${
-                type === 'scoops' ? 'smak' : 'dodatek'
-              }`}
-            />
-            <h4>Smak: {item.name}</h4>
+            <div>
+              <img
+                src={item.imagePath}
+                alt={`${item.name.toLowerCase()} ${
+                  type === 'scoops' ? 'smak' : 'dodatek'
+                }`}
+              />
+              <span>{item.price} zł / szt.</span>
+              <OrderInput type={type} name={item.name} items={items} />
+            </div>
           </div>
         );
       })}
+      <div>
+        Cena
+        {type === 'scoops'
+          ? ` lodów: ${scoopsTotalPrice}`
+          : ` dodatków: ${toppingsTotalPrice}`}
+      </div>
     </div>
   );
 };
