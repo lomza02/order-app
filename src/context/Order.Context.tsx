@@ -15,6 +15,7 @@ interface IContextProps {
   scoops: Map<string, ICountItem>;
   toppings: Map<string, ICountItem>;
   updateItems: updateItems;
+  isOrderValid: boolean;
 }
 
 interface ICountItem {
@@ -59,6 +60,7 @@ export const OrderProvider: React.FunctionComponent = (props) => {
     scoops: new Map<string, ICountItem>(),
     toppings: new Map<string, ICountItem>(),
   });
+  const [isOrderValid, setIsOrderValid] = useState(false);
   const zeroPrice: string = formatPrice(0);
   const [totals, setTotals] = useState<ITotals>({
     scoopsTotalPrice: zeroPrice,
@@ -74,6 +76,11 @@ export const OrderProvider: React.FunctionComponent = (props) => {
       toppingsTotalPrice: formatPrice(toppingsTotalPrice),
       grandTotalPrice: formatPrice(grandTotalPrice),
     });
+    if (scoopsTotalPrice <= 0) {
+      setIsOrderValid(false);
+    } else {
+      setIsOrderValid(true);
+    }
   }, [items]);
 
   const updateItems: updateItems = (name, price, amount, type) => {
@@ -83,7 +90,7 @@ export const OrderProvider: React.FunctionComponent = (props) => {
   };
 
   const value = useMemo(() => {
-    return { ...totals, ...items, updateItems };
-  }, [totals, items, updateItems]);
+    return { ...totals, ...items, updateItems, isOrderValid };
+  }, [totals, items, updateItems, isOrderValid]);
   return <OrderContext.Provider value={value} {...props} />;
 };
