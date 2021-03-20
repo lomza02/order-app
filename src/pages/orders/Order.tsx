@@ -18,7 +18,7 @@ const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
         const res = await fetch(`http://localhost:3030/${type}`);
         const parseRes: IItem[] = await res.json();
         setItems(parseRes);
-      } catch (error) {
+      } catch {
         setError(true);
       }
     })();
