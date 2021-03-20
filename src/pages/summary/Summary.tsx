@@ -30,7 +30,9 @@ const Summary: React.FunctionComponent<ISummaryProps> = ({ handlePage }) => {
       return (
         <ul>
           {nestedArr.map((item) => (
-            <li>{item[0]}</li>
+            <li key={item[0]}>
+              {item[0]} {item[1].amount} x {item[1].price} zł
+            </li>
           ))}
         </ul>
       );
@@ -41,12 +43,10 @@ const Summary: React.FunctionComponent<ISummaryProps> = ({ handlePage }) => {
 
   return (
     <div>
-      <h2>Lody</h2>
+      <h2>Lody: {scoopsTotalPrice}</h2>
       {renderList(scoopsArr)}
-      <h2>Suma: {scoopsTotalPrice}</h2>
-      <h2>Dodatki</h2>
+      <h2>Dodatki: {toppingsTotalPrice}</h2>
       {renderList(toppingsArr)}
-      <h2>Suma: {toppingsTotalPrice}</h2>
       <h1>Suma: {grandTotalPrice}</h1>
       <label htmlFor='accept-rules'>Akceptuję regulamin</label>
       <input
