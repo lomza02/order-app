@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { ICountItem } from '../models/ICountItem.model';
 import { Offer } from '../models/Offer.model';
 
 type updateItems = (
@@ -16,11 +17,7 @@ interface IContextProps {
   toppings: Map<string, ICountItem>;
   updateItems: updateItems;
   isOrderValid: boolean;
-}
-
-interface ICountItem {
-  amount: number;
-  price: number;
+  clearItems: () => void;
 }
 
 interface ITotals {
@@ -89,8 +86,15 @@ export const OrderProvider: React.FunctionComponent = (props) => {
     setItems(newItems);
   };
 
+  const clearItems = () => {
+    setItems({
+      scoops: new Map<string, ICountItem>(),
+      toppings: new Map<string, ICountItem>(),
+    });
+  };
+
   const value = useMemo(() => {
-    return { ...totals, ...items, updateItems, isOrderValid };
-  }, [totals, items, updateItems, isOrderValid]);
+    return { ...totals, ...items, updateItems, isOrderValid, clearItems };
+  }, [totals, items, updateItems, isOrderValid, clearItems]);
   return <OrderContext.Provider value={value} {...props} />;
 };
