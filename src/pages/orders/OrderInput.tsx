@@ -61,7 +61,9 @@ const OrderInput: React.FunctionComponent<IOrderInputProps> = ({
         onChange={handleInput}
         id={name}
       />
-      {errorText !== '' ? <p role='alert'>{errorText}</p> : null}
+      {type === 'scoops' && errorText !== '' ? (
+        <p role='alert'>{errorText}</p>
+      ) : null}
     </>
   );
 };
