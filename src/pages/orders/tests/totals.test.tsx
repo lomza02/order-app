@@ -7,7 +7,7 @@ import { OrderProvider } from '../../../context/Order.Context';
 test('grand total', async () => {
   const promise = Promise.resolve();
   await act(async () => {
-    render(<Orders />, { wrapper: OrderProvider });
+    render(<Orders handlePage={jest.fn()} />, { wrapper: OrderProvider });
     await promise;
   });
   const chocolateInput = await screen.findByRole('spinbutton', {

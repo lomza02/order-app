@@ -7,7 +7,7 @@ describe('test switching to next section', () => {
   test('if the information is complete the button is active', async () => {
     const promise = Promise.resolve();
     await act(async () => {
-      render(<Orders />, { wrapper: OrderProvider });
+      render(<Orders handlePage={jest.fn()} />, { wrapper: OrderProvider });
       await promise;
     });
     //user cannot buy just toppings so we check the scoops
