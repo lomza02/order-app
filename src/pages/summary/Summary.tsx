@@ -18,8 +18,8 @@ const Summary: React.FunctionComponent<ISummaryProps> = ({ handlePage }) => {
   } = useOrderContext();
   useEffect(() => {
     if (scoops && toppings) {
-      setScoopsArr(Object.entries(Object.fromEntries(scoops)));
-      setToppingsArr(Object.entries(Object.fromEntries(toppings)));
+      setScoopsArr(Array.from(scoops.entries()));
+      setToppingsArr(Array.from(toppings.entries()));
     }
   }, [scoops, toppings]);
   const handleInput = () => {
