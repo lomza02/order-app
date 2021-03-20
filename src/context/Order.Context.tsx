@@ -80,18 +80,24 @@ export const OrderProvider: React.FunctionComponent = (props) => {
     }
   }, [items]);
 
-  const updateItems: updateItems = (name, price, amount, type) => {
-    const newItems = { ...items };
-    newItems[type].set(name, { amount: amount, price: price });
-    setItems(newItems);
-  };
+  const updateItems: updateItems = useMemo(
+    () => (name, price, amount, type) => {
+      const newItems = { ...items };
+      newItems[type].set(name, { amount: amount, price: price });
+      setItems(newItems);
+    },
+    [items]
+  );
 
-  const clearItems = () => {
-    setItems({
-      scoops: new Map<string, ICountItem>(),
-      toppings: new Map<string, ICountItem>(),
-    });
-  };
+  const clearItems = useMemo(
+    () => () => {
+      setItems({
+        scoops: new Map<string, ICountItem>(),
+        toppings: new Map<string, ICountItem>(),
+      });
+    },
+    []
+  );
 
   const value = useMemo(() => {
     return { ...totals, ...items, updateItems, isOrderValid, clearItems };
