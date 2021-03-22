@@ -1,0 +1,29 @@
+@import '../../../variables.scss';
+
+$color-disabled: rgba(128, 128, 128, 0.2);
+
+.button {
+  border: none;
+  font-size: $font-size-xl;
+  text-transform: uppercase;
+  padding: $margin-xl 30px;
+  background-color: $accent-color;
+  color: black;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: lighten($accent-color, 50%);
+    color: $color-disabled;
+    cursor: text;
+  }
+  &:disabled:hover {
+    background-color: lighten($accent-color, 50%);
+    color: $color-disabled;
+    cursor: text;
+  }
+  &:hover {
+    background-color: darken($accent-color, 10%);
+    color: white;
+  }
+}

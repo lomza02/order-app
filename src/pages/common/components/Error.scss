@@ -1,0 +1,10 @@
+@import '../../../variables.scss';
+
+.alert {
+  width: 100%;
+  text-align: center;
+  margin: $margin-xxl;
+  padding: $margin-xxl;
+  font-size: $font-size-xxl;
+  background-color: red;
+}
