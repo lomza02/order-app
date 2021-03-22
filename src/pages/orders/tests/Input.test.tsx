@@ -14,9 +14,6 @@ test('scoops input validation', async () => {
   expect(
     screen.getByText('Ilość nie może być liczbą ujemną')
   ).toBeInTheDocument();
-  expect(
-    screen.queryByText('Ilość musi być liczbą całkowitą')
-  ).not.toBeInTheDocument();
 
   //if amount is not intiger number
   userEvent.clear(scoopChocolateInput);
@@ -24,9 +21,16 @@ test('scoops input validation', async () => {
   expect(
     screen.getByText('Ilość musi być liczbą całkowitą')
   ).toBeInTheDocument();
+
+  userEvent.clear(scoopChocolateInput);
+  userEvent.type(scoopChocolateInput, '1000');
   expect(
-    screen.queryByText('Ilość nie może być liczbą ujemną')
-  ).not.toBeInTheDocument();
+    screen.queryByText('Ilość musi być mniejsza niż 1000')
+  ).toBeInTheDocument();
+
+  userEvent.clear(scoopChocolateInput);
+  userEvent.type(scoopChocolateInput, '0');
+  expect(screen.queryByText('Ilość nie może być zerem')).toBeInTheDocument();
 
   //if value is valid errors are hidden
   userEvent.clear(scoopChocolateInput);
@@ -36,5 +40,11 @@ test('scoops input validation', async () => {
   ).not.toBeInTheDocument();
   expect(
     screen.queryByText('Ilość musi być liczbą całkowitą')
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText('Ilość nie może być zerem')
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText('Ilość musi być mniejsza niż 1000')
   ).not.toBeInTheDocument();
 });

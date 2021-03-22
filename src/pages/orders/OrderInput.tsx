@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IItem } from '../../models/IItem.model';
 import { useOrderContext } from '../../context/Order.Context';
 import { Offer } from '../../models/Offer.model';
+
 interface IOrderInputProps {
   type: Offer;
   name: string;
@@ -25,23 +26,40 @@ const OrderInput: React.FunctionComponent<IOrderInputProps> = ({
           ? +e.currentTarget.value
           : Number(e.currentTarget.checked);
       if ((amount && updateItems) || (amount === 0 && updateItems)) {
-        //condtions
+        //conditions
         const rules: {
           condition: boolean;
           msg: string;
+          clearInput: boolean;
         }[] = [
-          { condition: amount < 0, msg: 'Ilość nie może być liczbą ujemną' },
-          { condition: amount === 0, msg: 'Ilość nie może być zerem' },
+          {
+            condition: amount < 0,
+            msg: 'Ilość nie może być liczbą ujemną',
+            clearInput: true,
+          },
+          {
+            condition: amount === 0,
+            msg: 'Ilość nie może być zerem',
+            clearInput: true,
+          },
+          {
+            condition: amount >= 1000,
+            msg: 'Ilość musi być mniejsza niż 1000',
+            clearInput: false,
+          },
           {
             condition: amount % 1 !== 0,
             msg: 'Ilość musi być liczbą całkowitą',
+            clearInput: true,
           },
         ];
         //validation
         for (const rule of rules) {
           if (rule.condition) {
-            e.currentTarget.value = '';
-            updateItems(name, price, 0, type);
+            if (rule.clearInput) {
+              e.currentTarget.value = '';
+              updateItems(name, price, 0, type);
+            }
             setErrorText('');
             return setErrorText(rule.msg);
           }
@@ -52,19 +70,22 @@ const OrderInput: React.FunctionComponent<IOrderInputProps> = ({
     }
   };
   return (
-    <>
-      <label htmlFor={name}>
+    <div className='input'>
+      <label htmlFor={name} className='input__label'>
         {type === 'scoops' ? 'Smak' : 'Dodatek'} {name.toLowerCase()}
       </label>
       <input
+        className='input__input'
         type={type === 'scoops' ? 'number' : 'checkbox'}
         onChange={handleInput}
         id={name}
       />
       {type === 'scoops' && errorText !== '' ? (
-        <p role='alert'>{errorText}</p>
+        <p className='input__alert' role='alert'>
+          {errorText}
+        </p>
       ) : null}
-    </>
+    </div>
   );
 };
 
