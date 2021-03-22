@@ -1,25 +1,17 @@
 import Order from './Order';
-import { useOrderContext } from '../../context/Order.Context';
+import Sum from './components/Sum';
 
 interface IOrdersProps {
   handlePage: (route: string) => any;
 }
 
 const Orders: React.FunctionComponent<IOrdersProps> = ({ handlePage }) => {
-  const { grandTotalPrice, isOrderValid } = useOrderContext();
   return (
-    <>
+    <div className='wrapper'>
       <Order type='scoops' />
       <Order type='toppings' />
-      <div>
-        <h2>Suma: {grandTotalPrice}</h2>
-      </div>
-      <div>
-        <button disabled={!isOrderValid} onClick={() => handlePage('summary')}>
-          Dalej
-        </button>
-      </div>
-    </>
+      <Sum handlePage={handlePage} />
+    </div>
   );
 };
 

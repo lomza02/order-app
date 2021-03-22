@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { IItem } from '../../models/IItem.model';
-import { useOrderContext } from '../../context/Order.Context';
-import OrderInput from './OrderInput';
 import { Offer } from '../../models/Offer.model';
-
+import Item from './components/Item';
+import Price from './components/Price';
+import Error from '../common/components/Error';
+import './Order.scss';
 interface IOrderProps {
   type: Offer;
 }
@@ -11,11 +12,13 @@ interface IOrderProps {
 const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
   const [items, setItems] = useState<IItem[]>([]);
   const [error, setError] = useState<boolean>(false);
-  const { scoopsTotalPrice, toppingsTotalPrice } = useOrderContext();
+
   useEffect(() => {
     (async function fetchItems() {
       try {
-        const res = await fetch(`http://localhost:3030/${type}`);
+        const res = await fetch(
+          (process.env.REACT_APP_BACKEND as string) + `/${type}`
+        );
         const parseRes: IItem[] = await res.json();
         setItems(parseRes);
       } catch {
@@ -25,31 +28,26 @@ const Order: React.FunctionComponent<IOrderProps> = ({ type }) => {
   }, [type]);
 
   if (error) {
-    return <div role='alert'>Wystąpił błąd podczas pobierania danych</div>;
+    return <Error />;
   }
   return (
-    <div>
-      {items.map((item: IItem) => {
-        return (
-          <div key={item.name}>
-            <div>
-              <img
-                src={item.imagePath}
-                alt={`${item.name.toLowerCase()} ${
-                  type === 'scoops' ? 'smak' : 'dodatek'
-                }`}
-              />
-              <span>{item.price} zł / szt.</span>
-              <OrderInput type={type} name={item.name} items={items} />
-            </div>
-          </div>
-        );
-      })}
-      <div>
-        Cena
-        {type === 'scoops'
-          ? ` lodów: ${scoopsTotalPrice}`
-          : ` dodatków: ${toppingsTotalPrice}`}
+    <div className='wrapper'>
+      <div className='wrapper__upper'>
+        {items.map((item: IItem) => {
+          return (
+            <Item
+              name={item.name}
+              imagePath={item.imagePath}
+              type={type}
+              items={items}
+              price={item.price}
+              key={item.name}
+            />
+          );
+        })}
+      </div>
+      <div className='wrapper__lower'>
+        <Price type={type} />
       </div>
     </div>
   );

@@ -1,0 +1,39 @@
+@import '../../../variables.scss';
+
+$item-width: 320px;
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $item-width;
+  height: $item-width;
+  background-color: white;
+  margin: $margin-xl;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  &__border {
+    width: 90%;
+    height: 90%;
+    padding: $margin-xl;
+    border: $border-dotted;
+    border-radius: $border-radius;
+  }
+  &__img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    &-photo {
+      width: 50%;
+      margin: $margin-xl;
+    }
+  }
+  &__price {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: $margin-xl 0;
+    font-size: $font-size-xm;
+    font-weight: 700;
+  }
+}

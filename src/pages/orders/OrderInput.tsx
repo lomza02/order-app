@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IItem } from '../../models/IItem.model';
 import { useOrderContext } from '../../context/Order.Context';
 import { Offer } from '../../models/Offer.model';
-
+import './OrderInput.scss';
 interface IOrderInputProps {
   type: Offer;
   name: string;
