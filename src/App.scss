@@ -1,0 +1,12 @@
+@import './variables.scss';
+
+.app {
+  display: flex;
+  justify-content: center;
+  &__main {
+    display: flex;
+    justify-content: center;
+    width: 1400px;
+    margin: $margin-xxl;
+  }
+}
