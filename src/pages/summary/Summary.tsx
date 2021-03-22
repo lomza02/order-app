@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useOrderContext } from '../../context/Order.Context';
 import { ICountItem } from '../../models/ICountItem.model';
+import Button from '../common/components/Button';
+import List from './List';
+import './Summary.scss';
+
 interface ISummaryProps {
   handlePage: (route: string) => any;
 }
@@ -25,39 +29,35 @@ const Summary: React.FunctionComponent<ISummaryProps> = ({ handlePage }) => {
   const handleInput = () => {
     setChecked(!checked);
   };
-  const renderList = (nestedArr: [string, ICountItem][]) => {
-    if (nestedArr.length > 0) {
-      return (
-        <ul>
-          {nestedArr.map((item) => (
-            <li key={item[0]}>
-              {item[0]} {item[1].amount} x {item[1].price} zł
-            </li>
-          ))}
-        </ul>
-      );
-    } else {
-      return <div>brak dodatków</div>;
-    }
-  };
 
   return (
-    <div>
-      <h2>Lody: {scoopsTotalPrice}</h2>
-      {renderList(scoopsArr)}
-      <h2>Dodatki: {toppingsTotalPrice}</h2>
-      {renderList(toppingsArr)}
-      <h1>Suma: {grandTotalPrice}</h1>
-      <label htmlFor='accept-rules'>Akceptuję regulamin</label>
-      <input
-        id='accept-rules'
-        type='checkbox'
-        checked={checked}
-        onChange={handleInput}
-      />
-      <button disabled={!checked} onClick={() => handlePage('confirmation')}>
-        Dalej
-      </button>
+    <div className='summary'>
+      <div className='summary__border'>
+        <h2 className='summary__header'>Lody: {scoopsTotalPrice}</h2>
+        <List nestedArr={scoopsArr} />
+        <h2 className='summary__header'>Dodatki: {toppingsTotalPrice}</h2>
+        <List nestedArr={toppingsArr} />
+        <div className='summary__line'></div>
+        <h1 className='summary__header summary__header--bigger'>
+          Suma: {grandTotalPrice}
+        </h1>
+
+        <div className='summary__wrapper'>
+          <label htmlFor='accept-rules' className='summary__label'>
+            Akceptuję regulamin
+          </label>
+          <input
+            className='summary__checkbox'
+            id='accept-rules'
+            type='checkbox'
+            checked={checked}
+            onChange={handleInput}
+          />
+        </div>
+        <Button disabled={!checked} onClick={() => handlePage('confirmation')}>
+          Dalej
+        </Button>
+      </div>
     </div>
   );
 };

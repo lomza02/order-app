@@ -1,0 +1,7 @@
+@import '../../variables.scss';
+.list {
+  list-style: none;
+  &__item {
+    margin: $margin-xxl $margin-xl;
+  }
+}

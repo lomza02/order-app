@@ -1,0 +1,40 @@
+@import '../../variables.scss';
+
+.summary {
+  padding: $margin-xxl;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  min-width: 320px;
+  max-width: 1280px;
+  &__border {
+    padding: $margin-xl;
+    border: $border-dotted;
+    border-radius: $border-radius;
+  }
+  &__line {
+    border-top: $border-dotted;
+    margin-bottom: $margin-xxl;
+  }
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  &__label {
+    margin: $margin-xl 0;
+    width: 100%;
+  }
+  &__checkbox {
+    margin: 0 0 $margin-xl 0;
+    width: 20px;
+    height: 20px;
+  }
+  &__header {
+    display: inline-block;
+    font-size: $font-size-xxl;
+    &--bigger {
+      font-size: $font-size-xxxl;
+    }
+  }
+}
